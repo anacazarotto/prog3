@@ -1,0 +1,8 @@
+const { render, screen } = require('@testing-library/react');
+const ExampleComponent = require('./ExampleComponent'); // Adjust the import based on your component's location
+
+test('renders hello world text', () => {
+	render(<ExampleComponent />);
+	const linkElement = screen.getByText(/hello world/i);
+	expect(linkElement).toBeInTheDocument();
+});
