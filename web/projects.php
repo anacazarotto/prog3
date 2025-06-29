@@ -13,9 +13,23 @@ $this->title = 'Projetos - Geezthor';
                     <h1 class="display-4 fw-bold">Meus Projetos</h1>
                     <p class="lead">Gerencie todos os seus projetos de arquitetura em um só lugar</p>
                 </div>
-                <div class="col-lg-4 text-lg-end">
-                    <a href="<?= \yii\helpers\Url::to(['site/projeto-create']) ?>" class="btn btn-success btn-lg rounded-pill">
-                        <i class="bi bi-plus
+                
+                <?php
+                use yii\helpers\Url;
+                $username = null;
+                if (!Yii::$app->user->isGuest) {
+                    $username = Yii::$app->user->identity->username;
+                }
+                ?>
+                <?php if ($username === 'admin'): ?>
+                    <div class="col-lg-4 text-lg-end">
+                        <a href="<?= \yii\helpers\Url::to(['site/projeto-create']) ?>" class="btn btn-success btn-lg rounded-pill">
+                            <i class="bi bi-plus-circle me-2"></i>Novo Projeto
+                        </a>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
@@ -139,12 +153,6 @@ $this->title = 'Projetos - Geezthor';
                             <div class="progress-bar bg-success" style="width: 100%"></div>
                         </div>
                         <small class="text-muted">100% Concluído</small>
-                    </div>
-                    <div class="card-footer">
-                        <div class="btn-group w-100">
-                            <a href="/site/projeto-view?id=3" class="btn btn-outline-primary">Ver Detalhes</a>
-                            <a href="#" class="btn btn-outline-secondary">Relatório</a>
-                        </div>
                     </div>
                 </div>
             </div>

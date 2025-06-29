@@ -84,11 +84,21 @@ function getProgressValue($projeto) {
                         <i class="bi bi-check-circle me-1"></i><?= $estatisticas['ativos'] ?> Ativos
                     </span>
                 </div>
-            </div>            <div class="col-lg-4 text-lg-end">
+            </div>          
+            <?php
+            use yii\helpers\Url;
+            $username = null;
+            if (!Yii::$app->user->isGuest) {
+                $username = Yii::$app->user->identity->username;
+            }
+            ?>
+            <?php if ($username === 'admin'): ?>
+            <div class="col-lg-4 text-lg-end">
                 <a href="<?= \yii\helpers\Url::to(['site/projeto-create']) ?>" class="btn btn-success btn-lg shadow" style="border-radius: var(--border-radius-xl); padding: 0.875rem 2rem; font-weight: 600;">
                     <i class="bi bi-plus-circle me-2"></i>Novo Projeto
                 </a>
             </div>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -150,9 +160,18 @@ function getProgressValue($projeto) {
                                     </div>
                                 </div>
                                 <small class="text-muted"><?= getProgressValue($projeto) ?>% Concluído</small>
-                            </div>                            <div class="card-footer bg-transparent border-0" style="border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);">                                <div class="btn-group w-100" role="group">
-                                    <a href="<?= \yii\helpers\Url::to(['site/projeto-view', 'id' => $projeto->id]) ?>" class="btn btn-outline-primary" style="border-radius: var(--border-radius-md) 0 0 var(--border-radius-md); background-color: #ffffff !important; color: var(--primary-color) !important;">Ver Detalhes</a>
-                                    <a href="<?= \yii\helpers\Url::to(['site/projeto-edit', 'id' => $projeto->id]) ?>" class="btn btn-outline-secondary" style="border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; background-color: #ffffff !important; color: var(--secondary-color) !important;">Editar</a>
+                            </div>                           
+                            <div class="card-footer bg-transparent border-0" style="border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);">                                <div class="btn-group w-100" role="group">
+                                <a href="<?= \yii\helpers\Url::to(['site/projeto-view', 'id' => $projeto->id]) ?>" class="btn btn-outline-primary" style="border-radius: var(--border-radius-md) 0 0 var(--border-radius-md); background-color: #ffffff !important; color: var(--primary-color) !important;">Ver Detalhes</a>
+                                    <?php
+                                    $username = null;
+                                    if (!Yii::$app->user->isGuest) {
+                                        $username = Yii::$app->user->identity->username;
+                                    }
+                                    ?>
+                                    <?php if ($username === 'admin'): ?>
+                                        <a href="<?= \yii\helpers\Url::to(['site/projeto-edit', 'id' => $projeto->id]) ?>" class="btn btn-outline-secondary" style="border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; background-color: #ffffff !important; color: var(--secondary-color) !important;">Editar</a>
+                                    <?php endif; ?>                                    
                                 </div>
                             </div>
                         </div>

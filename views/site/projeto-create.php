@@ -63,7 +63,7 @@ $this->title = 'Novo Projeto - Geezthor';
                                     <i class="bi bi-gear me-2"></i>Detalhes do Projeto
                                 </h5>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <?= $form->field($model, 'tipo_projeto')->dropDownList([
                                     '' => 'Selecione o tipo de projeto',
                                     'residencial' => 'Residencial',
@@ -84,6 +84,18 @@ $this->title = 'Novo Projeto - Geezthor';
                                     'class' => 'form-select',
                                     'options' => ['ativo' => ['selected' => true]]
                                 ])->label('Status Inicial') ?>
+                            </div>
+                            <div class="col-md-6">
+                                <?= $form->field($model, 'etapas')->dropDownList([
+                                    'Orçamento' => 'Orçamento',
+                                    'Estudo Preliminar' => 'Estudo Preliminar',
+                                    'Anteprojeto' => 'Anteprojeto',
+                                    'Projeto Legal' => 'Projeto Legal',
+                                    'Projeto Executivo' => 'Projeto Executivo'
+                                ], [
+                                    'class' => 'form-select',
+                                    'options' => ['Orçamento' => ['selected' => true]]
+                                ])->label('Etapa Inicial') ?>
                             </div>
                         </div>
                         

@@ -33,6 +33,7 @@ class Project extends ActiveRecord
             'endereco' => 'Endereço',
             'tipo_projeto' => 'Tipo de Projeto',
             'status' => 'Status',
+            'etapas' => 'Etapas',
         ];
     }
 }

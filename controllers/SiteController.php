@@ -11,6 +11,9 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\ProjectForm;
 use app\models\Project;
+use app\models\Comentario;
+use app\models\Arquivo;
+use yii\web\UploadedFile;
 
 class SiteController extends Controller
 {
@@ -65,6 +68,7 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
+
     /**
      * Login action.
      *
@@ -124,7 +128,13 @@ class SiteController extends Controller
      */
     public function actionAbout()
     {
-        return $this->render('about');
+        $model = new ProjectForm();
+        $projects = Project::find()->all();
+
+        return $this->render('about', [
+            'model' => $model,
+            'projects' => $projects,
+        ]);
     }
 
     /**
@@ -147,6 +157,8 @@ class SiteController extends Controller
             $projeto->endereco = $model->endereco;
             $projeto->tipo_projeto = $model->tipo_projeto;
             $projeto->status = $model->status;
+            $projeto->horas_trabalhadas = $model->horas_trabalhadas;
+            $projeto->pendencias = $model->pendencias;
 
             if ($projeto->save()) {
                 Yii::$app->session->setFlash('success', 'Projeto criado com sucesso!');
@@ -165,25 +177,16 @@ class SiteController extends Controller
      * Displays projects page.
      *
      * @return string
-     */    /**
-     * Displays projects page.
-     *
-     * @return string
      */
     public function actionProjects()
     {
-        // Buscar todos os projetos do banco de dados
         $projetos = Project::find()->orderBy(['id' => SORT_DESC])->all();
-        
-        // Obter estatísticas
         $totalAtivos = Project::find()->where(['status' => 'ativo'])->count();
         $totalConcluidos = Project::find()->where(['status' => 'concluido'])->count();
         $totalPausados = Project::find()->where(['status' => 'pausado'])->count();
         $totalOrcamento = Project::find()->where(['status' => 'orcamento'])->count();
-        
-        // Calcular valor total dos projetos (faturamento)
         $faturamento = Project::find()->sum('valor_total');
-        
+
         return $this->render('projects', [
             'projetos' => $projetos,
             'estatisticas' => [
@@ -195,9 +198,9 @@ class SiteController extends Controller
             ]
         ]);
     }
-    
+
     /**
-     * Displays projetos page.
+     * Redireciona para a listagem de projetos.
      *
      * @return string
      */
@@ -207,45 +210,68 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays a single project.
+     * Exibe um projeto e permite comentários/anexos.
      *
      * @param integer $id
      * @return string
      */
-    public function actionProjetoView($id = 1)
+
+    public function actionProjetoView($id)
     {
-        // Buscar o projeto específico no banco de dados
         $projeto = Project::findOne($id);
-        
-        // Se o projeto não for encontrado, redirecionar para a lista
         if ($projeto === null) {
             Yii::$app->session->setFlash('error', 'Projeto não encontrado.');
             return $this->redirect(['projects']);
         }
-        
+
+        $comentarioModel = new Comentario();
+        $arquivoModel = new Arquivo();
+
+        $comentarioModel->project_id = $projeto->id;
+        $arquivoModel->project_id = $projeto->id;
+
+        // Comentário POST
+        if ($comentarioModel->load(Yii::$app->request->post()) && $comentarioModel->save()) {
+            Yii::$app->session->setFlash('success', 'Comentário adicionado!');
+            return $this->refresh();
+        }
+
+        // Upload de arquivo
+        if (Yii::$app->request->isPost) {
+            $arquivoModel->uploadFile = UploadedFile::getInstance($arquivoModel, 'uploadFile');
+            if ($arquivoModel->upload() && $arquivoModel->save()) {
+                Yii::$app->session->setFlash('success', 'Arquivo enviado!');
+                return $this->refresh();
+            }
+        }
+
+        $comentarios = Comentario::find()->where(['project_id' => $id])->orderBy(['created_at' => SORT_DESC])->all();
+        $arquivos = Arquivo::find()->where(['project_id' => $id])->orderBy(['created_at' => SORT_DESC])->all();
+
         return $this->render('projeto-view', [
             'projeto' => $projeto,
+            'comentarioModel' => $comentarioModel,
+            'arquivoModel' => $arquivoModel,
+            'comentarios' => $comentarios,
+            'arquivos' => $arquivos,
         ]);
     }
 
     /**
-     * Edits an existing project.
+     * Edita um projeto existente.
      *
      * @param integer $id
      * @return Response|string
      */
     public function actionProjetoEdit($id)
     {
-        // Buscar o projeto específico no banco de dados
         $projeto = Project::findOne($id);
-        
-        // Se o projeto não for encontrado, redirecionar para a lista
+
         if ($projeto === null) {
             Yii::$app->session->setFlash('error', 'Projeto não encontrado.');
             return $this->redirect(['projects']);
         }
 
-        // Criar um modelo de formulário e preencher com os dados existentes
         $model = new ProjectForm();
         $model->name = $projeto->name;
         $model->description = $projeto->description;
@@ -256,9 +282,10 @@ class SiteController extends Controller
         $model->endereco = $projeto->endereco;
         $model->tipo_projeto = $projeto->tipo_projeto;
         $model->status = $projeto->status;
+        $model->horas_trabalhadas = $projeto->horas_trabalhadas;
+        $model->pendencias = $projeto->pendencias;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            // Atualizar os dados do projeto
             $projeto->name = $model->name;
             $projeto->description = $model->description;
             $projeto->cliente = $model->cliente;
@@ -268,6 +295,8 @@ class SiteController extends Controller
             $projeto->endereco = $model->endereco;
             $projeto->tipo_projeto = $model->tipo_projeto;
             $projeto->status = $model->status;
+            $projeto->horas_trabalhadas = $model->horas_trabalhadas;
+            $projeto->pendencias = $model->pendencias;
 
             if ($projeto->save()) {
                 Yii::$app->session->setFlash('success', 'Projeto atualizado com sucesso!');
@@ -282,20 +311,18 @@ class SiteController extends Controller
             'projeto' => $projeto,
         ]);
     }
-    
+
     /**
-     * Testa a conexão com o banco de dados
-     * 
+     * Testa a conexão com o banco de dados.
+     *
      * @return string
      */
     public function actionTesteConexao()
     {
         $resultado = '';
-        
         try {
-            // Tenta executar uma consulta simples
             $resultado = Yii::$app->db->createCommand('SELECT 1 as teste')->queryOne();
-            
+
             if ($resultado) {
                 return $this->render('teste-conexao', [
                     'status' => 'Sucesso',
@@ -317,5 +344,38 @@ class SiteController extends Controller
                 ]
             ]);
         }
+    }
+
+    /**
+     * Exclui um projeto existente.
+     *
+     * @param integer $id
+     * @return Response
+     */
+    public function actionProjetoDelete($id)
+    {
+        $projeto = $this->findModel($id); // Busca segura
+
+        if ($projeto->delete()) {
+            Yii::$app->session->setFlash('success', 'Projeto excluído com sucesso!');
+        } else {
+            Yii::$app->session->setFlash('error', 'Erro ao excluir projeto!');
+        }
+
+        return $this->redirect(['site/projects']);
+    }
+
+    /**
+     * Busca um modelo Project pelo ID.
+     * @param integer $id
+     * @return Project o modelo encontrado
+     * @throws \yii\web\NotFoundHttpException se não encontrado
+     */
+    protected function findModel($id)
+    {
+        if (($model = Project::findOne($id)) !== null) {
+            return $model;
+        }
+        throw new \yii\web\NotFoundHttpException('Projeto não encontrado.');
     }
 }

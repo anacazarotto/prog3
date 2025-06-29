@@ -2,6 +2,12 @@
 <?php
 /** @var yii\web\View $this */
 $this->title = 'Geezthor - Gestão para Escritórios de Arquitetura';
+
+$username = null;
+if (Yii::$app->user->identity !== null) {
+// O usuário está logado
+    $username = Yii::$app->user->identity->username;
+}
 ?>
 
 <div class="site-index fade-in">
@@ -20,14 +26,29 @@ $this->title = 'Geezthor - Gestão para Escritórios de Arquitetura';
                         <li class="mb-3"><i class="bi bi-check-circle-fill text-success me-3"></i>Acompanhamento em tempo real</li>
                         <li class="mb-3"><i class="bi bi-check-circle-fill text-success me-3"></i>Interface moderna e intuitiva</li>
                     </ul>
-                    <div class="d-flex gap-3 flex-wrap">
-                        <a href="<?= \yii\helpers\Url::to(['site/projects']) ?>" class="btn btn-primary btn-lg px-4 py-3">
-                            <i class="bi bi-folder-open me-2"></i>Ver Projetos
-                        </a>
-                        <a href="<?= \yii\helpers\Url::to(['site/projeto-create']) ?>" class="btn btn-success btn-lg px-4 py-3">
-                            <i class="bi bi-plus-circle me-2"></i>Novo Projeto
-                        </a>
-                    </div>
+                    
+                    <?php
+                    use yii\helpers\Url;
+                    $username = null;
+                    if (!Yii::$app->user->isGuest) {
+                        $username = Yii::$app->user->identity->username;
+                    }
+                    ?>
+
+                    <?php if ($username === 'admin' || $username === 'demo'): ?>
+                        <div class="d-flex gap-3 flex-wrap">
+                            <a href="<?= Url::to(['site/projects']) ?>" class="btn btn-primary btn-lg px-4 py-3">
+                                <i class="bi bi-folder-open me-2"></i>Ver Projetos
+                            </a>
+
+                            <?php if ($username === 'admin'): ?>
+                                <a href="<?= Url::to(['site/projeto-create']) ?>" class="btn btn-success btn-lg px-4 py-3">
+                                    <i class="bi bi-plus-circle me-2"></i>Novo Projeto
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+
                 </div>
                 <div class="col-lg-6 text-center">
                     <div class="hero-image-container">
@@ -65,8 +86,8 @@ $this->title = 'Geezthor - Gestão para Escritórios de Arquitetura';
                         <div class="mb-3">
                             <i class="bi bi-calendar-check fs-1 text-primary"></i>
                         </div>
-                        <h3 class="card-title h5">Agendamento</h3>
-                        <p class="card-text">Agende reuniões com clientes e gerencie sua disponibilidade eficientemente.</p>
+                        <h3 class="card-title h5">Checklist de Projeto</h3>
+                        <p class="card-text">Controle mais a fundo sua gestão de projetos, tenho mais controle sobre as etapas.</p>
                         <span class="badge bg-info">Atualizado</span>
                     </div>
                 </div>
@@ -122,9 +143,6 @@ $this->title = 'Geezthor - Gestão para Escritórios de Arquitetura';
                                 </div>
                             </div>
                         </div>
-                        <div class="text-center mt-4">
-                            <a href="#cadastro" class="btn btn-outline-primary btn-lg">Quero otimizar meu fluxo</a>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -164,10 +182,7 @@ $this->title = 'Geezthor - Gestão para Escritórios de Arquitetura';
     <div id="cadastro" class="container mb-5">
         <div class="row justify-content-center">
             <div class="col-lg-8 text-center">
-                <h2 class="display-5 fw-bold mb-4">Pronto para Começar?</h2>
-                <p class="lead mb-4">Transforme a gestão do seu escritório de arquitetura hoje mesmo.</p>
-                <a href="/site/signup" class="btn btn-success btn-lg px-5 py-3">Crie sua Conta Agora</a>
-                <p class="mt-3 text-muted">Sem cartão de crédito. Teste grátis por 14 dias.</p>
+                <p class="lead mb-4">Faça login, e transforme a gestão do seu escritório de arquitetura hoje mesmo.</p>
             </div>
         </div>
     </div>

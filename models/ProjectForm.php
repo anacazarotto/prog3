@@ -5,7 +5,8 @@ namespace app\models;
 use yii\base\Model;
 
 class ProjectForm extends Model
-{    public $name;
+{
+    public $name;
     public $description;
     public $cliente;
     public $data_inicio;
@@ -13,16 +14,24 @@ class ProjectForm extends Model
     public $valor_total;
     public $endereco;
     public $tipo_projeto;
-    public $status;    public function rules()
+    public $status;
+    public $etapas;
+    public $horas_trabalhadas;
+    public $pendencias;
+
+    public function rules()
     {
         return [
             [['name', 'cliente'], 'required'],
             [['description', 'endereco'], 'string'],
             [['data_inicio', 'data_entrega'], 'date', 'format' => 'yyyy-MM-dd'],
             [['valor_total'], 'number'],
-            [['cliente', 'tipo_projeto', 'status'], 'string'],
+            [['cliente', 'tipo_projeto', 'status', 'horas_trabalhadas', 'pendencias'], 'string'],
+            [['etapas'], 'safe'],
         ];
-    }    public function attributeLabels()
+    }
+
+    public function attributeLabels()
     {
         return [
             'name' => 'Nome do Projeto',
@@ -34,6 +43,9 @@ class ProjectForm extends Model
             'endereco' => 'Endereço',
             'tipo_projeto' => 'Tipo de Projeto',
             'status' => 'Status',
+            'etapas' => 'Etapas',
+            'horas_trabalhadas' => 'Horas Trabalhadas',
+            'pendencias' => 'Pendências',
         ];
     }
 }

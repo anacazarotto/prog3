@@ -65,7 +65,7 @@ $this->title = 'Editar Projeto - ' . $projeto->name;
                                     <i class="bi bi-gear me-2"></i>Detalhes do Projeto
                                 </h5>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <?= $form->field($model, 'tipo_projeto')->dropDownList([
                                     '' => 'Selecione o tipo de projeto',
                                     'residencial' => 'Residencial',
@@ -83,6 +83,39 @@ $this->title = 'Editar Projeto - ' . $projeto->name;
                                     'pausado' => 'Pausado',
                                     'concluido' => 'Concluído'
                                 ], ['class' => 'form-select'])->label('Status') ?>
+                            </div>
+                            <div class="col-md-6">
+                                <?= $form->field($model, 'etapas')->dropDownList([
+                                    'Orçamento' => 'Orçamento',
+                                    'Estudo Preliminar' => 'Estudo Preliminar',
+                                    'Anteprojeto' => 'Anteprojeto',
+                                    'Projeto Legal' => 'Projeto Legal',
+                                    'Projeto Executivo' => 'Projeto Executivo'
+                                ], [
+                                    'class' => 'form-select',
+                                    'options' => ['Orçamento' => ['selected' => true]]
+                                ])->label('Etapa') ?>
+                            </div>
+                        </div>
+
+                        <!-- Informações Extras -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="text-primary mb-3">
+                                    <i class="bi bi-bar-chart-fill me-2"></i>Informações Extras
+                                </h5>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <?= $form->field($model, 'horas_trabalhadas')->textInput([
+                                    'class' => 'form-control text-primary text-center',
+                                    'placeholder' => 'Horas'
+                                ])->label('<i class="bi bi-clock-history me-1"></i>Horas Trabalhadas') ?>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <?= $form->field($model, 'pendencias')->textInput([
+                                    'class' => 'form-control text-warning text-center',
+                                    'placeholder' => 'Pendências'
+                                ])->label('<i class="bi bi-exclamation-circle me-1"></i>Pendências') ?>
                             </div>
                         </div>
                         
@@ -155,9 +188,6 @@ $this->title = 'Editar Projeto - ' . $projeto->name;
                                             ['class' => 'btn btn-outline-secondary btn-lg']) ?>
                                     </div>
                                     <div>
-                                        <button type="button" class="btn btn-outline-danger btn-lg me-3" onclick="resetForm()">
-                                            <i class="bi bi-arrow-clockwise me-2"></i>Limpar
-                                        </button>
                                         <button type="submit" class="btn btn-warning btn-lg">
                                             <i class="bi bi-check-circle me-2"></i>Atualizar Projeto
                                         </button>
@@ -242,6 +272,12 @@ $this->title = 'Editar Projeto - ' . $projeto->name;
 h5.text-primary {
     border-bottom: 2px solid #0d6efd;
     padding-bottom: 8px;
+}
+
+/* Ícones coloridos nos labels */
+.form-label i {
+    vertical-align: middle;
+    margin-right: 4px;
 }
 </style>
 
