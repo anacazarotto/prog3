@@ -1,19 +1,16 @@
-🛠️ Gestor de Projetos de Arquitetura - Yii2
+# 🛠️ Gestor de Projetos de Arquitetura - Yii2
 
-Este é um sistema de controle de projetos desenvolvido com o framework PHP Yii2. A aplicação foi criada com base no template básico do Yii2, mas recebeu diversas personalizações voltadas ao gerenciamento de projetos de arquitetura, incluindo:
+Este é um sistema de controle de projetos desenvolvido com o framework PHP **Yii2**. A aplicação foi criada com base no template básico do Yii2, mas recebeu diversas personalizações voltadas ao gerenciamento de projetos de arquitetura, incluindo:
 
-Cadastro e visualização de projetos
+- Cadastro e visualização de projetos
+- Acompanhamento de status e etapas
+- Upload e download de arquivos por projeto
+- Área de comentários com nome do usuário
+- Interface com Bootstrap e ícones
 
-Acompanhamento de status e etapas
+## 📂 Estrutura de Diretórios
 
-Upload e download de arquivos por projeto
-
-Área de comentários com nome do usuário
-
-Interface com Bootstrap e ícones
-
-📂 Estrutura de Diretórios
-
+```
 assets/         → Definições de assets (JS, CSS, etc.)
 commands/       → Comandos de console (opcional)
 config/         → Arquivos de configuração da aplicação
@@ -22,32 +19,35 @@ models/         → Modelos (regras de negócio, DB)
 views/          → Arquivos de visualização (HTML/PHP)
 web/            → Entrada da aplicação (index.php e recursos web)
 uploads/        → (Adicionado) Arquivos enviados pelos usuários
+```
 
-✅ Requisitos
+## ✅ Requisitos
 
-PHP >= 7.4
+- PHP >= 7.4
+- Composer
+- Servidor MySQL/MariaDB
+- Extensões do PHP habilitadas: `pdo`, `mbstring`, `openssl`, etc.
 
-Composer
+## 🚀 Instalação
 
-Servidor MySQL/MariaDB
+### 1. Clonar o Repositório
 
-Extensões do PHP habilitadas: pdo, mbstring, openssl, etc.
-
-🚀 Instalação
-
-1. Clonar o Repositório
-
+```bash
 git clone https://github.com/seu-usuario/seu-repo.git
 cd seu-repo
+```
 
-2. Instalar Dependências
+### 2. Instalar Dependências
 
+```bash
 composer install
+```
 
-3. Configurar o Banco de Dados
+### 3. Configurar o Banco de Dados
 
-Edite config/db.php com os dados corretos:
+Edite `config/db.php` com os dados corretos:
 
+```php
 return [
     'class' => 'yii\\db\\Connection',
     'dsn' => 'mysql:host=localhost;dbname=gestor',
@@ -55,43 +55,49 @@ return [
     'password' => '',
     'charset' => 'utf8',
 ];
+```
 
 Crie o banco de dados manualmente utilizando um cliente MySQL ou ferramenta de sua preferência.
 
-4. Configurar a chave de validação de cookies
+### 4. Configurar a chave de validação de cookies
 
-No arquivo config/web.php, defina uma chave aleatória:
+No arquivo `config/web.php`, defina uma chave aleatória:
 
+```php
 'request' => [
     'cookieValidationKey' => 'insira_uma_chave_secreta_aqui',
 ],
+```
 
-5. Rodar o servidor local
+### 5. Rodar o servidor local
 
+```bash
 php yii serve
+```
 
-Acesse: http://localhost:8080
+Acesse: [http://localhost:8080](http://localhost:8080)
 
-📦 Uploads de Arquivos
+## 📦 Uploads de Arquivos
 
-Os arquivos são enviados para a pasta web/uploads/. Certifique-se de que esta pasta tem permissão de escrita:
+Os arquivos são enviados para a pasta `web/uploads/`. Certifique-se de que esta pasta tem permissão de escrita:
 
+```bash
 chmod -R 775 web/uploads
+```
 
-🗣️ Comentários
+## 🗣️ Comentários
 
 Cada projeto pode receber comentários, que são registrados com o nome de usuário logado e exibidos em ordem cronológica na visualização do projeto.
 
-🖼️ Interface
+## 🖼️ Interface
 
-O frontend utiliza Bootstrap 5 e ícones (como os do Bootstrap Icons ou FontAwesome). A interface é responsiva e pensada para facilitar a leitura e acompanhamento dos projetos.
+O frontend utiliza **Bootstrap 5** e ícones (como os do Bootstrap Icons ou FontAwesome). A interface é responsiva e pensada para facilitar a leitura e acompanhamento dos projetos.
 
-👥 Equipe de Desenvolvimento
+## 👥 Equipe de Desenvolvimento
 
-Ana Carla Londero Cazarotto
+- Ana Carla Londero Cazarotto
+- João Vitor Machado
 
-João Vitor Machado
-
-📄 Licença
+## 📄 Licença
 
 Este projeto é acadêmico e foi desenvolvido como parte de uma disciplina da graduação. Uso livre para fins educacionais.
