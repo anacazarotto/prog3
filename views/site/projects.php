@@ -5,7 +5,6 @@
 
 $this->title = 'Projetos - Geezthor';
 
-// Helper functions
 function getStatusLabel($status) {
     switch ($status) {
         case 'ativo':
@@ -68,7 +67,6 @@ function getProgressValue($projeto) {
 ?>
 
 <div class="projetos-index fade-in">
-    <!-- Header Section -->
     <div class="hero-section slide-up">
         <div class="row align-items-center">
             <div class="col-lg-8">
@@ -102,7 +100,6 @@ function getProgressValue($projeto) {
         </div>
     </div>
 
-    <!-- Filtros e Busca -->
     <div class="filter-section">        <div class="row">
             <div class="col-md-6">
                 <div class="input-group">
@@ -120,7 +117,7 @@ function getProgressValue($projeto) {
                 </select>
             </div>
         </div>
-    </div>    <!-- Lista de Projetos -->
+    </div>  
     <div class="container mb-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="display-6 fw-bold">Seus Projetos</h2>
@@ -138,7 +135,7 @@ function getProgressValue($projeto) {
                     </div>
                 </div>
             <?php else: ?>
-                <?php foreach ($projetos as $projeto): ?>                    <!-- Projeto Card -->
+                <?php foreach ($projetos as $projeto): ?> 
                     <div class="col-lg-4 col-md-6 projeto-item" data-status="<?= $projeto->status ?>">
                         <div class="card h-100 shadow-sm border-0" style="border-radius: var(--border-radius-lg);">                            <div class="card-header d-flex justify-content-between align-items-center" style="border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0; background: var(--primary-color); color: white;">
                                 <h5 class="card-title mb-0 text-white"><?= \yii\helpers\Html::encode($projeto->name) ?></h5>
@@ -178,7 +175,7 @@ function getProgressValue($projeto) {
                     </div>                <?php endforeach; ?>
             <?php endif; ?>
         </div>
-    </div>    <!-- Estatísticas -->
+    </div>  
     <div class="container mb-5">
         <div class="text-center mb-4">
             <h2 class="display-6 fw-bold">Estatísticas do Portfólio</h2>

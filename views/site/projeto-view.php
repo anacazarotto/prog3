@@ -12,7 +12,6 @@ use yii\widgets\ActiveForm;
 
 $this->title = 'Projeto: ' . Html::encode($projeto->name) . ' - Geezthor';
 
-// Funções auxiliares
 function getStatusLabel($status) {
     $labels = [
         'ativo' => 'Em Andamento',
@@ -66,7 +65,6 @@ function getEtapaLabel($status) {
     }
 }
 
-// Determinar o progresso das etapas baseado no status do projeto
 $etapas = [
     'orcamento' => [
         'Orçamento' => 'current',
@@ -102,8 +100,6 @@ $etapasStatus = $etapas[$projeto->status] ?? $etapas['orcamento'];
 ?>
 
 <div class="projeto-view fade-in">
-
-    <!-- Breadcrumb e título -->
     <div class="container mb-4">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -181,7 +177,6 @@ $etapasStatus = $etapas[$projeto->status] ?? $etapas['orcamento'];
                     </div>
                 </div>
 
-                <!-- Documentos e Arquivos -->
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">Documentos</h5>
@@ -202,7 +197,6 @@ $etapasStatus = $etapas[$projeto->status] ?? $etapas['orcamento'];
                     </div>
                 </div>
 
-                <!-- Comentários -->
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0">Comentários</h5>
@@ -235,7 +229,6 @@ $etapasStatus = $etapas[$projeto->status] ?? $etapas['orcamento'];
             </div>
 
             <div class="col-lg-4">
-                <!-- Progresso -->
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">Progresso</h5>
@@ -253,7 +246,6 @@ $etapasStatus = $etapas[$projeto->status] ?? $etapas['orcamento'];
                         </div>
                     </div>
                 </div>
-                <!-- Etapas -->
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">Etapas</h5>
@@ -269,7 +261,6 @@ $etapasStatus = $etapas[$projeto->status] ?? $etapas['orcamento'];
                         </div>
                     </div>
                 </div>
-                                <!-- Informações Rápidas -->
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0">Informações</h5>

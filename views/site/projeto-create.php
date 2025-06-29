@@ -13,7 +13,6 @@ $this->title = 'Novo Projeto - Geezthor';
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10">
-                <!-- Breadcrumb -->
                 <nav aria-label="breadcrumb" class="mb-4">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><?= Html::a('<i class="bi bi-folder me-1"></i>Projetos', ['site/projects'], ['encode' => false]) ?></li>
@@ -21,7 +20,6 @@ $this->title = 'Novo Projeto - Geezthor';
                     </ol>
                 </nav>
                 
-                <!-- Card Principal -->
                 <div class="card shadow-lg border-0 slide-up">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
@@ -35,7 +33,6 @@ $this->title = 'Novo Projeto - Geezthor';
                             'options' => ['class' => 'needs-validation', 'novalidate' => true]
                         ]); ?>
                         
-                        <!-- Informações Básicas -->
                         <div class="row mb-4">
                             <div class="col-12">
                                 <h5 class="text-primary mb-3">
@@ -56,7 +53,6 @@ $this->title = 'Novo Projeto - Geezthor';
                             </div>
                         </div>
                         
-                        <!-- Detalhes do Projeto -->
                         <div class="row mb-4">
                             <div class="col-12">
                                 <h5 class="text-primary mb-3">
@@ -99,7 +95,6 @@ $this->title = 'Novo Projeto - Geezthor';
                             </div>
                         </div>
                         
-                        <!-- Informações Financeiras e Cronograma -->
                         <div class="row mb-4">
                             <div class="col-12">
                                 <h5 class="text-primary mb-3">
@@ -126,7 +121,6 @@ $this->title = 'Novo Projeto - Geezthor';
                             </div>
                         </div>
                         
-                        <!-- Localização -->
                         <div class="row mb-4">
                             <div class="col-12">
                                 <h5 class="text-primary mb-3">
@@ -141,7 +135,6 @@ $this->title = 'Novo Projeto - Geezthor';
                             </div>
                         </div>
                         
-                        <!-- Descrição -->
                         <div class="row mb-4">
                             <div class="col-12">
                                 <h5 class="text-primary mb-3">
@@ -157,7 +150,6 @@ $this->title = 'Novo Projeto - Geezthor';
                             </div>
                         </div>
                         
-                        <!-- Botões de Ação -->
                         <div class="card-footer bg-light border-0 d-flex gap-3 justify-content-end p-4">
                             <?= Html::a('<i class="bi bi-arrow-left me-2"></i>Cancelar', ['site/projects'], [
                                 'class' => 'btn btn-outline-secondary btn-lg'
@@ -171,7 +163,6 @@ $this->title = 'Novo Projeto - Geezthor';
                     </div>
                 </div>
                 
-                <!-- Card de Dicas -->
                 <div class="card border-0 bg-light mt-4 fade-in-up" style="animation-delay: 0.2s;">
                     <div class="card-body">
                         <h6 class="text-muted mb-3">
@@ -248,7 +239,6 @@ $this->title = 'Novo Projeto - Geezthor';
     background-color: var(--gray-50) !important;
 }
 
-/* Validação */
 .form-control.is-invalid {
     border-color: var(--danger-color);
 }
@@ -257,7 +247,6 @@ $this->title = 'Novo Projeto - Geezthor';
     border-color: var(--success-color);
 }
 
-/* Responsividade do formulário */
 @media (max-width: 768px) {
     .projeto-create .card-header {
         padding: 1.5rem;

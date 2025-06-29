@@ -5,13 +5,11 @@ $this->title = 'Geezthor - Gestão para Escritórios de Arquitetura';
 
 $username = null;
 if (Yii::$app->user->identity !== null) {
-// O usuário está logado
     $username = Yii::$app->user->identity->username;
 }
 ?>
 
 <div class="site-index fade-in">
-    <!-- Hero Section -->
     <div class="hero-section slide-up mb-5">
         <div class="container">
             <div class="row align-items-center">
@@ -188,15 +186,15 @@ if (Yii::$app->user->identity !== null) {
     </div>
 </div>
 
-<!-- Adicione este CSS no arquivo de layout ou em um arquivo CSS separado -->
+
 <style>
 .hero-section {
     border-radius: 2rem 2rem 2rem 2rem;
     background: linear-gradient(180deg, rgb(107, 153, 199) 0%, rgb(255, 255, 255) 100%);
-    padding-top: 80px;    /* Apenas o espaço superior */
-    padding-bottom: 80px; /* Espaço inferior */
-    padding-left: 30px;   /* Espaço à esquerda */
-    padding-right: 30px;  /* Espaço à direita */
+    padding-top: 80px;
+    padding-bottom: 80px;
+    padding-left: 30px; 
+    padding-right: 30px;
     right: 0;
     left: 0;
     top: 0;

@@ -14,7 +14,6 @@ $this->title = 'Editar Projeto - ' . $projeto->name;
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10">
-                <!-- Breadcrumb -->
                 <nav aria-label="breadcrumb" class="mb-4">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><?= Html::a('Projetos', ['site/projects']) ?></li>
@@ -23,7 +22,6 @@ $this->title = 'Editar Projeto - ' . $projeto->name;
                     </ol>
                 </nav>
                 
-                <!-- Card Principal -->
                 <div class="card shadow-lg border-0 fade-in-up">
                     <div class="card-header bg-gradient-warning text-dark">
                         <div class="d-flex align-items-center">
@@ -37,7 +35,6 @@ $this->title = 'Editar Projeto - ' . $projeto->name;
                             'options' => ['class' => 'needs-validation', 'novalidate' => true]
                         ]); ?>
                         
-                        <!-- Informações Básicas -->
                         <div class="row mb-4">
                             <div class="col-12">
                                 <h5 class="text-primary mb-3">
@@ -58,7 +55,6 @@ $this->title = 'Editar Projeto - ' . $projeto->name;
                             </div>
                         </div>
                         
-                        <!-- Detalhes do Projeto -->
                         <div class="row mb-4">
                             <div class="col-12">
                                 <h5 class="text-primary mb-3">
@@ -98,7 +94,6 @@ $this->title = 'Editar Projeto - ' . $projeto->name;
                             </div>
                         </div>
 
-                        <!-- Informações Extras -->
                         <div class="row mb-4">
                             <div class="col-12">
                                 <h5 class="text-primary mb-3">
@@ -119,7 +114,6 @@ $this->title = 'Editar Projeto - ' . $projeto->name;
                             </div>
                         </div>
                         
-                        <!-- Informações Financeiras e Cronograma -->
                         <div class="row mb-4">
                             <div class="col-12">
                                 <h5 class="text-primary mb-3">
@@ -146,7 +140,6 @@ $this->title = 'Editar Projeto - ' . $projeto->name;
                             </div>
                         </div>
                         
-                        <!-- Localização -->
                         <div class="row mb-4">
                             <div class="col-12">
                                 <h5 class="text-primary mb-3">
@@ -161,7 +154,6 @@ $this->title = 'Editar Projeto - ' . $projeto->name;
                             </div>
                         </div>
                         
-                        <!-- Descrição -->
                         <div class="row mb-4">
                             <div class="col-12">
                                 <h5 class="text-primary mb-3">
