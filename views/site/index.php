@@ -1,4 +1,3 @@
-
 <?php
 /** @var yii\web\View $this */
 $this->title = 'Geezthor - Gestão para Escritórios de Arquitetura';
@@ -33,17 +32,14 @@ if (Yii::$app->user->identity !== null) {
                     }
                     ?>
 
-                    <?php if ($username === 'admin' || $username === 'demo'): ?>
+                    <?php if (!Yii::$app->user->isGuest): ?>
                         <div class="d-flex gap-3 flex-wrap">
                             <a href="<?= Url::to(['site/projects']) ?>" class="btn btn-primary btn-lg px-4 py-3">
                                 <i class="bi bi-folder-open me-2"></i>Ver Projetos
                             </a>
-
-                            <?php if ($username === 'admin'): ?>
-                                <a href="<?= Url::to(['site/projeto-create']) ?>" class="btn btn-success btn-lg px-4 py-3">
-                                    <i class="bi bi-plus-circle me-2"></i>Novo Projeto
-                                </a>
-                            <?php endif; ?>
+                            <a href="<?= Url::to(['site/projeto-create']) ?>" class="btn btn-success btn-lg px-4 py-3">
+                                <i class="bi bi-plus-circle me-2"></i>Novo Projeto
+                            </a>
                         </div>
                     <?php endif; ?>
 

@@ -2,103 +2,120 @@
 
 namespace app\models;
 
-class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
+use Yii;
+use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
+
+class User extends ActiveRecord implements IdentityInterface
 {
-    public $id;
-    public $username;
+    // Campo auxiliar para senha (não vai para o banco)
     public $password;
-    public $authKey;
-    public $accessToken;
-
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
 
     /**
-     * {@inheritdoc}
+     * Nome da tabela.
      */
-    public static function findIdentity($id)
+    public static function tableName()
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return 'user';
     }
 
     /**
-     * {@inheritdoc}
+     * Regras de validação.
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public function rules()
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
+        return [
+            [['username', 'role'], 'required'],
+            ['password', 'required', 'on' => 'create'],
+            [['username'], 'string', 'max' => 64],
+            [['password_hash'], 'string', 'max' => 255],
+            [['auth_key'], 'string', 'max' => 32],
+            [['role'], 'string', 'max' => 16],
+            [['created_at', 'updated_at'], 'integer'],
+            [['username'], 'unique'],
+            [['password'], 'string', 'min' => 6],
+        ];
+    }
+
+    /**
+     * Labels para o formulário.
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'username' => 'Usuário',
+            'password' => 'Senha',
+            'password_hash' => 'Hash da Senha',
+            'auth_key' => 'Auth Key',
+            'role' => 'Papel',
+            'created_at' => 'Criado em',
+            'updated_at' => 'Atualizado em',
+        ];
+    }
+
+    /**
+     * Antes de salvar, gera o hash da senha se informado.
+     */
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if (!empty($this->password)) {
+                $this->setPassword($this->password);
             }
-        }
-
-        return null;
-    }
-
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
+            if ($this->isNewRecord) {
+                $this->auth_key = Yii::$app->security->generateRandomString();
             }
+            return true;
         }
-
-        return null;
+        return false;
     }
 
     /**
-     * {@inheritdoc}
+     * Gera e armazena o hash da senha.
      */
-    public function getId()
+    public function setPassword($password)
     {
-        return $this->id;
+        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getAuthKey()
-    {
-        return $this->authKey;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->authKey === $authKey;
-    }
-
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
+     * Valida a senha informada.
      */
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
+    }
+
+    // Métodos do IdentityInterface
+
+    public static function findIdentity($id)
+    {
+        return static::findOne($id);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return static::findOne(['access_token' => $token]);
+    }
+
+    public static function findByUsername($username)
+    {
+        return static::findOne(['username' => $username]);
+    }
+
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+
+    public function getAuthKey()
+    {
+        return $this->auth_key;
+    }
+
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
     }
 }

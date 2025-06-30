@@ -48,7 +48,6 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <?php
     $username = null;
     if (Yii::$app->user->identity !== null) {
-    // O usuário está logado
         $username = Yii::$app->user->identity->username;
     }
     NavBar::begin([
@@ -56,40 +55,37 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar navbar-expand-md navbar-dark fixed-top shadow-sm',
-    'style' => 'background-color: #2d3e50;'
-],
-    ]);echo Nav::widget([
-    'options' => ['class' => 'navbar-nav ms-auto'],
-    'items' => array_filter([
-        ['label' => '<i class="bi bi-house-door me-2"></i>Home', 'url' => ['/site/index'], 'encode' => false],
+            'style' => 'background-color: #2d3e50;'
+        ],
+    ]);
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav ms-auto'],
+        'items' => array_filter([
+            ['label' => '<i class="bi bi-house-door me-2"></i>Home', 'url' => ['/site/index'], 'encode' => false],
 
-        // Apenas para admin logado
-        $username === 'admin' ? 
-            ['label' => '<i class="bi bi-folder me-2"></i>Projetos', 'url' => ['/site/projects'], 'encode' => false] : null,
+            // Projetos e Novo Projeto para qualquer usuário autenticado
+            !Yii::$app->user->isGuest ? 
+                ['label' => '<i class="bi bi-folder me-2"></i>Projetos', 'url' => ['/site/projects'], 'encode' => false] : null,
 
-        $username === 'admin' ? 
-            ['label' => '<i class="bi bi-plus-circle me-2"></i>Novo Projeto', 'url' => ['/site/projeto-create'], 'encode' => false] : null,
+            !Yii::$app->user->isGuest ? 
+                ['label' => '<i class="bi bi-plus-circle me-2"></i>Novo Projeto', 'url' => ['/site/projeto-create'], 'encode' => false] : null,
 
-        // Apenas para demo logado
-        $username === 'demo' ? 
-            ['label' => '<i class="bi bi-folder me-2"></i>Projetos', 'url' => ['/site/projects'], 'encode' => false] : null,
+            // Login/Logout
+            Yii::$app->user->isGuest
+                ? ['label' => '<i class="bi bi-box-arrow-in-right me-2"></i>Login', 'url' => ['/site/login'], 'encode' => false]
+                : '<li class="nav-item">'
+                    . Html::beginForm(['/site/logout'], 'post', ['class' => 'd-inline'])
+                    . Html::submitButton(
+                        '<i class="bi bi-box-arrow-right me-2"></i>Logout (' . Html::encode(Yii::$app->user->identity->username) . ')',
+                        ['class' => 'nav-link btn btn-link logout p-0 align-baseline text-white']
+                    )
+                    . Html::endForm()
+                    . '</li>',
+        ]),
+    ]);
 
-        // Login/Logout
-        Yii::$app->user->isGuest
-            ? ['label' => '<i class="bi bi-box-arrow-in-right me-2"></i>Login', 'url' => ['/site/login'], 'encode' => false]
-            : '<li class="nav-item">'
-                . Html::beginForm(['/site/logout'], 'post', ['class' => 'd-inline'])
-                . Html::submitButton(
-                    '<i class="bi bi-box-arrow-right me-2"></i>Logout (' . Html::encode(Yii::$app->user->identity->username) . ')',
-                    ['class' => 'nav-link btn btn-link logout p-0 align-baseline text-white']
-                )
-                . Html::endForm()
-                . '</li>',
-    ]),
-]);
-
-NavBar::end();
-    ?>
+    NavBar::end();
+?>
 </header>
 
 <main id="main" class="flex-shrink-0" role="main" style="padding-top:70px;">

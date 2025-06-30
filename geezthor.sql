@@ -1,9 +1,3 @@
--- Estrutura do banco de dados `geezthor`
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
 CREATE TABLE `arquivo` (
   `id` int(11) NOT NULL,
   `caminho` varchar(255) NOT NULL,
@@ -26,6 +20,7 @@ CREATE TABLE `migration` (
 
 CREATE TABLE `projetos` (
   `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `cliente` varchar(255) NOT NULL,
   `tipo_projeto` enum('residencial','comercial','reforma','paisagismo','interiores','outro') DEFAULT NULL,
@@ -40,39 +35,12 @@ CREATE TABLE `projetos` (
   `pendencias` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Índices
-
-ALTER TABLE `arquivo`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `project_id` (`project_id`);
-
-ALTER TABLE `comentario`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `project_id` (`project_id`);
-
-ALTER TABLE `migration`
-  ADD PRIMARY KEY (`version`);
-
-ALTER TABLE `projetos`
-  ADD PRIMARY KEY (`id`);
-
--- AUTO_INCREMENT
-
-ALTER TABLE `arquivo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE `comentario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE `projetos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
--- Restrições de chave estrangeira
-
-ALTER TABLE `arquivo`
-  ADD CONSTRAINT `arquivo_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projetos` (`id`);
-
-ALTER TABLE `comentario`
-  ADD CONSTRAINT `comentario_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projetos` (`id`);
-
-COMMIT;
+CREATE TABLE `user` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `username` varchar(64) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `auth_key` varchar(32) NOT NULL,
+  `role` varchar(16) NOT NULL DEFAULT 'user',
+  `created_at` int(10) UNSIGNED DEFAULT NULL,
+  `updated_at` int(10) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

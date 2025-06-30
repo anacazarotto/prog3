@@ -15,12 +15,25 @@ use yii\web\UploadedFile;
 
 class ProjetoController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['projeto-create', 'projeto-edit', 'projeto-delete'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'allow' => false,
+                    ],
+                ],
+            ],
+        ];
+    }
 
-    /**
-     * Creates a new project.
-     *
-     * @return Response|string
-     */
     public function actionProjetoCreate()
     {
         $model = new ProjectForm();
@@ -38,6 +51,7 @@ class ProjetoController extends Controller
             $projeto->status = $model->status;
             $projeto->horas_trabalhadas = $model->horas_trabalhadas;
             $projeto->pendencias = $model->pendencias;
+            $projeto->user_id = Yii::$app->user->id;
 
             if ($projeto->save()) {
                 Yii::$app->session->setFlash('success', 'Projeto criado com sucesso!');
@@ -52,19 +66,15 @@ class ProjetoController extends Controller
         ]);
     }
 
-    /**
-     * Displays projects page.
-     *
-     * @return string
-     */
     public function actionProjects()
     {
-        $projetos = Project::find()->orderBy(['id' => SORT_DESC])->all();
-        $totalAtivos = Project::find()->where(['status' => 'ativo'])->count();
-        $totalConcluidos = Project::find()->where(['status' => 'concluido'])->count();
-        $totalPausados = Project::find()->where(['status' => 'pausado'])->count();
-        $totalOrcamento = Project::find()->where(['status' => 'orcamento'])->count();
-        $faturamento = Project::find()->sum('valor_total');
+        $userId = Yii::$app->user->id;
+        $projetos = Project::find()->where(['user_id' => $userId])->orderBy(['id' => SORT_DESC])->all();
+        $totalAtivos = Project::find()->where(['status' => 'ativo', 'user_id' => $userId])->count();
+        $totalConcluidos = Project::find()->where(['status' => 'concluido', 'user_id' => $userId])->count();
+        $totalPausados = Project::find()->where(['status' => 'pausado', 'user_id' => $userId])->count();
+        $totalOrcamento = Project::find()->where(['status' => 'orcamento', 'user_id' => $userId])->count();
+        $faturamento = Project::find()->where(['user_id' => $userId])->sum('valor_total');
 
         return $this->render('projects', [
             'projetos' => $projetos,
@@ -78,28 +88,16 @@ class ProjetoController extends Controller
         ]);
     }
 
-    /**
-     * Redireciona para a listagem de projetos.
-     *
-     * @return string
-     */
     public function actionProjetos()
     {
         return $this->redirect(['site/projects']);
     }
 
-    /**
-     * Exibe um projeto e permite comentários/anexos.
-     *
-     * @param integer $id
-     * @return string
-     */
-
     public function actionProjetoView($id)
     {
-        $projeto = Project::findOne($id);
+        $projeto = Project::findOne(['id' => $id, 'user_id' => Yii::$app->user->id]);
         if ($projeto === null) {
-            Yii::$app->session->setFlash('error', 'Projeto não encontrado.');
+            Yii::$app->session->setFlash('error', 'Projeto não encontrado ou acesso não autorizado.');
             return $this->redirect(['projects']);
         }
 
@@ -109,13 +107,11 @@ class ProjetoController extends Controller
         $comentarioModel->project_id = $projeto->id;
         $arquivoModel->project_id = $projeto->id;
 
-        // Comentário POST
         if ($comentarioModel->load(Yii::$app->request->post()) && $comentarioModel->save()) {
             Yii::$app->session->setFlash('success', 'Comentário adicionado!');
             return $this->refresh();
         }
 
-        // Upload de arquivo
         if (Yii::$app->request->isPost) {
             $arquivoModel->uploadFile = UploadedFile::getInstance($arquivoModel, 'uploadFile');
             if ($arquivoModel->upload() && $arquivoModel->save()) {
@@ -136,18 +132,12 @@ class ProjetoController extends Controller
         ]);
     }
 
-    /**
-     * Edita um projeto existente.
-     *
-     * @param integer $id
-     * @return Response|string
-     */
     public function actionProjetoEdit($id)
     {
-        $projeto = Project::findOne($id);
+        $projeto = Project::findOne(['id' => $id, 'user_id' => Yii::$app->user->id]);
 
         if ($projeto === null) {
-            Yii::$app->session->setFlash('error', 'Projeto não encontrado.');
+            Yii::$app->session->setFlash('error', 'Projeto não encontrado ou acesso não autorizado.');
             return $this->redirect(['projects']);
         }
 
@@ -191,15 +181,9 @@ class ProjetoController extends Controller
         ]);
     }
 
-    /**
-     * Exclui um projeto existente.
-     *
-     * @param integer $id
-     * @return Response
-     */
     public function actionProjetoDelete($id)
     {
-        $projeto = $this->findModel($id); // Busca segura
+        $projeto = $this->findModel($id);
 
         if ($projeto->delete()) {
             Yii::$app->session->setFlash('success', 'Projeto excluído com sucesso!');
@@ -210,18 +194,11 @@ class ProjetoController extends Controller
         return $this->redirect(['site/projects']);
     }
 
-    /**
-     * Busca um modelo Project pelo ID.
-     * @param integer $id
-     * @return Project o modelo encontrado
-     * @throws \yii\web\NotFoundHttpException se não encontrado
-     */
     protected function findModel($id)
     {
-        if (($model = Project::findOne($id)) !== null) {
+        if (($model = Project::findOne(['id' => $id, 'user_id' => Yii::$app->user->id])) !== null) {
             return $model;
         }
-        throw new \yii\web\NotFoundHttpException('Projeto não encontrado.');
+        throw new \yii\web\NotFoundHttpException('Projeto não encontrado ou acesso não autorizado.');
     }
-
 }

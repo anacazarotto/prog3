@@ -86,21 +86,22 @@ function getProgressValue($projeto) {
             <?php
             use yii\helpers\Url;
             $username = null;
+            $role = null;
             if (!Yii::$app->user->isGuest) {
                 $username = Yii::$app->user->identity->username;
+                $role = Yii::$app->user->identity->role;
             }
             ?>
-            <?php if ($username === 'admin'): ?>
             <div class="col-lg-4 text-lg-end">
                 <a href="<?= \yii\helpers\Url::to(['site/projeto-create']) ?>" class="btn btn-success btn-lg shadow" style="border-radius: var(--border-radius-xl); padding: 0.875rem 2rem; font-weight: 600;">
                     <i class="bi bi-plus-circle me-2"></i>Novo Projeto
                 </a>
             </div>
-            <?php endif; ?>
         </div>
     </div>
 
-    <div class="filter-section">        <div class="row">
+    <div class="filter-section">        
+        <div class="row">
             <div class="col-md-6">
                 <div class="input-group">
                     <span class="input-group-text" style="border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);"><i class="bi bi-search"></i></span>
@@ -129,7 +130,8 @@ function getProgressValue($projeto) {
                     <div class="empty-state">
                         <i class="bi bi-folder text-muted" style="font-size: 4rem;"></i>
                         <h3 class="mt-3">Nenhum projeto encontrado</h3>
-                        <p class="text-muted">Comece criando seu primeiro projeto!</p>                        <a href="<?= \yii\helpers\Url::to(['site/projeto-create']) ?>" class="btn btn-primary mt-3" style="border-radius: var(--border-radius-md); padding: 0.75rem 1.5rem; font-weight: 600;">
+                        <p class="text-muted">Comece criando seu primeiro projeto!</p>
+                        <a href="<?= \yii\helpers\Url::to(['site/projeto-create']) ?>" class="btn btn-primary mt-3" style="border-radius: var(--border-radius-md); padding: 0.75rem 1.5rem; font-weight: 600;">
                             <i class="bi bi-plus-circle me-2"></i>Criar Projeto
                         </a>
                     </div>
@@ -137,7 +139,8 @@ function getProgressValue($projeto) {
             <?php else: ?>
                 <?php foreach ($projetos as $projeto): ?> 
                     <div class="col-lg-4 col-md-6 projeto-item" data-status="<?= $projeto->status ?>">
-                        <div class="card h-100 shadow-sm border-0" style="border-radius: var(--border-radius-lg);">                            <div class="card-header d-flex justify-content-between align-items-center" style="border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0; background: var(--primary-color); color: white;">
+                        <div class="card h-100 shadow-sm border-0" style="border-radius: var(--border-radius-lg);">                            
+                            <div class="card-header d-flex justify-content-between align-items-center" style="border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0; background: var(--primary-color); color: white;">
                                 <h5 class="card-title mb-0 text-white"><?= \yii\helpers\Html::encode($projeto->name) ?></h5>
                                 <span class="badge <?= getBadgeClass($projeto->status) ?> rounded-pill">
                                     <?= getStatusLabel($projeto->status) ?>
@@ -149,7 +152,8 @@ function getProgressValue($projeto) {
                                 </p>
                                 <p class="text-muted mb-2">
                                     <i class="bi bi-calendar me-1"></i>Início: <?= Yii::$app->formatter->asDate($projeto->data_inicio, 'dd/MM/yyyy') ?>
-                                </p>                                <p class="text-muted mb-3">
+                                </p>                                
+                                <p class="text-muted mb-3">
                                     <i class="bi bi-geo-alt me-1"></i><?= \yii\helpers\Html::encode($projeto->endereco ?: 'Sem endereço definido') ?>
                                 </p>
                                 <div class="progress mb-3" style="border-radius: var(--border-radius-md); height: 10px;">
@@ -158,21 +162,15 @@ function getProgressValue($projeto) {
                                 </div>
                                 <small class="text-muted"><?= getProgressValue($projeto) ?>% Concluído</small>
                             </div>                           
-                            <div class="card-footer bg-transparent border-0" style="border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);">                                <div class="btn-group w-100" role="group">
-                                <a href="<?= \yii\helpers\Url::to(['site/projeto-view', 'id' => $projeto->id]) ?>" class="btn btn-outline-primary" style="border-radius: var(--border-radius-md) 0 0 var(--border-radius-md); background-color: #ffffff !important; color: var(--primary-color) !important;">Ver Detalhes</a>
-                                    <?php
-                                    $username = null;
-                                    if (!Yii::$app->user->isGuest) {
-                                        $username = Yii::$app->user->identity->username;
-                                    }
-                                    ?>
-                                    <?php if ($username === 'admin'): ?>
-                                        <a href="<?= \yii\helpers\Url::to(['site/projeto-edit', 'id' => $projeto->id]) ?>" class="btn btn-outline-secondary" style="border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; background-color: #ffffff !important; color: var(--secondary-color) !important;">Editar</a>
-                                    <?php endif; ?>                                    
+                            <div class="card-footer bg-transparent border-0" style="border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);">
+                                <div class="btn-group w-100" role="group">
+                                    <a href="<?= \yii\helpers\Url::to(['site/projeto-view', 'id' => $projeto->id]) ?>" class="btn btn-outline-primary" style="border-radius: var(--border-radius-md) 0 0 var(--border-radius-md); background-color: #ffffff !important; color: var(--primary-color) !important;">Ver Detalhes</a>
+                                    <a href="<?= \yii\helpers\Url::to(['site/projeto-edit', 'id' => $projeto->id]) ?>" class="btn btn-outline-secondary" style="border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; background-color: #ffffff !important; color: var(--secondary-color) !important;">Editar</a>
                                 </div>
                             </div>
                         </div>
-                    </div>                <?php endforeach; ?>
+                    </div>                
+                <?php endforeach; ?>
             <?php endif; ?>
         </div>
     </div>  
@@ -180,7 +178,8 @@ function getProgressValue($projeto) {
         <div class="text-center mb-4">
             <h2 class="display-6 fw-bold">Estatísticas do Portfólio</h2>
             <p class="text-muted">Visão geral dos seus projetos</p>
-        </div>        <div class="row g-4">
+        </div>        
+        <div class="row g-4">
             <div class="col-md-3">
                 <div class="card text-center bg-primary text-white stats-card h-100 shadow-lg">
                     <div class="card-body">
