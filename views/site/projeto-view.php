@@ -203,7 +203,7 @@ $etapasStatus = $etapas[$projeto->status] ?? $etapas['orcamento'];
                     </div>
                     <div class="card-body">
                         <?php $form = ActiveForm::begin(); ?>
-                        <?= $form->field($comentarioModel, 'username')->textInput(['maxlength' => true])->label('Nome do Usuário') ?>
+                        <?= $form->field($comentarioModel, 'username')->textInput(['maxlength' => true, 'readonly' => true])->label('Nome do Usuário') ?>
                         <?= $form->field($comentarioModel, 'comentario')->textarea(['rows' => 3])->label('Comentário') ?>
                         <?= Html::submitButton('Adicionar Comentário', ['class' => 'btn btn-primary btn-sm']) ?>
                         <?php ActiveForm::end(); ?>

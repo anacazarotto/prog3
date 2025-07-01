@@ -95,7 +95,7 @@ if (Yii::$app->user->identity !== null) {
                         </div>
                         <h3 class="card-title h5">Gestão de Horas</h3>
                         <p class="card-text">Registre e monitore as horas dedicadas a cada etapa dos seus projetos.</p>
-                        <span class="badge bg-warning text-dark">Em breve</span>
+                        <span class="badge bg-info">Atualizado</span>
                     </div>
                 </div>
             </div>
@@ -154,7 +154,7 @@ if (Yii::$app->user->identity !== null) {
                     <div class="card-body">
                         <blockquote class="blockquote mb-0">
                             <p class="mb-2">"A plataforma facilitou muito a organização dos meus projetos e o contato com clientes!"</p>
-                            <footer class="blockquote-footer">Ana Souza, <cite title="Source Title">Arquiteta</cite></footer>
+                            <footer class="blockquote-footer">Ana Londero, <cite title="Source Title">Arquiteta</cite></footer>
                         </blockquote>
                     </div>
                 </div>
@@ -164,7 +164,7 @@ if (Yii::$app->user->identity !== null) {
                     <div class="card-body">
                         <blockquote class="blockquote mb-0">
                             <p class="mb-2">"O controle de horas e tarefas é sensacional. Recomendo para todos os escritórios."</p>
-                            <footer class="blockquote-footer">Carlos Lima, <cite title="Source Title">Gestor de Projetos</cite></footer>
+                            <footer class="blockquote-footer">Carla Cazarotto, <cite title="Source Title">Gestora de Projetos</cite></footer>
                         </blockquote>
                     </div>
                 </div>

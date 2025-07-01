@@ -26,7 +26,8 @@ class ProjectForm extends Model
             [['description', 'endereco'], 'string'],
             [['data_inicio', 'data_entrega'], 'date', 'format' => 'yyyy-MM-dd'],
             [['valor_total'], 'number'],
-            [['cliente', 'tipo_projeto', 'status', 'horas_trabalhadas', 'pendencias'], 'string'],
+            [['cliente', 'tipo_projeto', 'status'], 'string'],
+            [['horas_trabalhadas', 'pendencias'], 'integer'],
             [['etapas'], 'safe'],
         ];
     }

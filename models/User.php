@@ -31,7 +31,6 @@ class User extends ActiveRecord implements IdentityInterface
             [['password_hash'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['role'], 'string', 'max' => 16],
-            [['created_at', 'updated_at'], 'integer'],
             [['username'], 'unique'],
             [['password'], 'string', 'min' => 6],
         ];
@@ -49,8 +48,6 @@ class User extends ActiveRecord implements IdentityInterface
             'password_hash' => 'Hash da Senha',
             'auth_key' => 'Auth Key',
             'role' => 'Papel',
-            'created_at' => 'Criado em',
-            'updated_at' => 'Atualizado em',
         ];
     }
 

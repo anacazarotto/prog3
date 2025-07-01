@@ -46,9 +46,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
 <header id="header">
 <?php
-    $username = null;
+    $role = null;
     if (Yii::$app->user->identity !== null) {
-        $username = Yii::$app->user->identity->username;
+        $role = Yii::$app->user->identity->role;
     }
     NavBar::begin([
         'brandLabel' => '<i class="bi bi-building"></i> ' . Html::encode(Yii::$app->name),
@@ -69,6 +69,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
             !Yii::$app->user->isGuest ? 
                 ['label' => '<i class="bi bi-plus-circle me-2"></i>Novo Projeto', 'url' => ['/site/projeto-create'], 'encode' => false] : null,
+
+            $role === 'admin' ? 
+                ['label' => '<i class="bi bi-plus-circle me-2"></i>Novo Usuário', 'url' => ['/user/create'], 'encode' => false] : null,
 
             // Login/Logout
             Yii::$app->user->isGuest

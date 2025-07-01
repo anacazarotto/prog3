@@ -69,7 +69,11 @@ class ProjetoController extends Controller
     public function actionProjects()
     {
         $userId = Yii::$app->user->id;
-        $projetos = Project::find()->where(['user_id' => $userId])->orderBy(['id' => SORT_DESC])->all();
+        if (Yii::$app->user->identity->role === 'admin'){
+            $projetos = Project::find()->orderBy(['id' => SORT_DESC])->all();
+        } else {
+            $projetos = Project::find()->where(['user_id' => $userId])->orderBy(['id' => SORT_DESC])->all();
+        }
         $totalAtivos = Project::find()->where(['status' => 'ativo', 'user_id' => $userId])->count();
         $totalConcluidos = Project::find()->where(['status' => 'concluido', 'user_id' => $userId])->count();
         $totalPausados = Project::find()->where(['status' => 'pausado', 'user_id' => $userId])->count();
@@ -95,7 +99,12 @@ class ProjetoController extends Controller
 
     public function actionProjetoView($id)
     {
-        $projeto = Project::findOne(['id' => $id, 'user_id' => Yii::$app->user->id]);
+        
+        if (Yii::$app->user->identity->role === 'admin'){
+            $projeto = Project::findOne(['id' => $id]);
+        } else {
+            $projeto = Project::findOne(['id' => $id, 'user_id' => Yii::$app->user->id]);
+        }
         if ($projeto === null) {
             Yii::$app->session->setFlash('error', 'Projeto não encontrado ou acesso não autorizado.');
             return $this->redirect(['projects']);
@@ -105,6 +114,7 @@ class ProjetoController extends Controller
         $arquivoModel = new Arquivo();
 
         $comentarioModel->project_id = $projeto->id;
+        $comentarioModel->username = Yii::$app->user->identity->username;
         $arquivoModel->project_id = $projeto->id;
 
         if ($comentarioModel->load(Yii::$app->request->post()) && $comentarioModel->save()) {
@@ -134,7 +144,11 @@ class ProjetoController extends Controller
 
     public function actionProjetoEdit($id)
     {
-        $projeto = Project::findOne(['id' => $id, 'user_id' => Yii::$app->user->id]);
+        if (Yii::$app->user->identity->role === 'admin'){
+            $projeto = Project::findOne(['id' => $id]);
+        } else {
+            $projeto = Project::findOne(['id' => $id, 'user_id' => Yii::$app->user->id]);
+        }
 
         if ($projeto === null) {
             Yii::$app->session->setFlash('error', 'Projeto não encontrado ou acesso não autorizado.');

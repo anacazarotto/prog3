@@ -8,6 +8,14 @@ Este é um sistema de controle de projetos desenvolvido com o framework PHP **Yi
 - Área de comentários com nome do usuário
 - Interface com Bootstrap e ícones
 
+Cada projeto pode receber comentários, que são registrados com o nome de usuário logado e exibidos em ordem cronológica na visualização do projeto.
+
+**Permissões de Role:**
+
+**Admin:** Pode ver e editar todos os projetos, pode comentar em todos, além de poder criar novos usuários.
+
+**User:** Pode ver e editar apenas seus próprios projetos, pode comentar apenas em seu projeto, além de não poder fazer cadastro de novos usuários.
+
 ## 📂 Estrutura de Diretórios
 
 ```
@@ -23,10 +31,13 @@ uploads/        → (Adicionado) Arquivos enviados pelos usuários
 
 ## ✅ Requisitos
 
-- PHP >= 7.4
+- PHP >= 8.2
 - Composer
 - Servidor MySQL/MariaDB
 - Extensões do PHP habilitadas: `pdo`, `mbstring`, `openssl`, etc.
+
+** Caso instale o XAMPP, ao utilizar a versão mais recente é possível instalar o composer utilizando o php do mesmo, assim 
+facilitando o setup no Windows.
 
 ## 🚀 Instalação
 
@@ -50,7 +61,7 @@ Edite `config/db.php` com os dados corretos:
 ```php
 return [
     'class' => 'yii\\db\\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=gestor',
+    'dsn' => 'mysql:host=localhost;dbname=geezthor',
     'username' => 'root',
     'password' => '',
     'charset' => 'utf8',
@@ -87,7 +98,12 @@ chmod -R 775 web/uploads
 
 ## 🗣️ Comentários
 
-Cada projeto pode receber comentários, que são registrados com o nome de usuário logado e exibidos em ordem cronológica na visualização do projeto.
+**Usuário Administrativo Base no arquivo geezthor.sql:**
+
+```
+Login: admin
+Senha: 123456
+```
 
 ## 🖼️ Interface
 
